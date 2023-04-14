@@ -1,5 +1,8 @@
 package ru.oop;
 
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * <b>Задача 2:</b><br>
  * Добраться человеку до заданного места.<br>
@@ -38,9 +41,13 @@ public class Main {
      * на любом, заранее определённом транспорте
      */
     public static void moveTo(Person person, Position destination) {
-        Transport bicycle = new Bicycle();
-        person.walk(bicycle.getPosition());
-        bicycle.go(destination);
+        List<Transport> transportList = List.of(new Car(person), new Bus("43", person), new Bus("50", person));
+        for (int i = 0; i < transportList.size() - 1; i++) {
+            person.walk(transportList.get(i).getPosition());
+            transportList.get(i).go(transportList.get(i + 1).getPosition());
+        }
+        person.walk(transportList.get(transportList.size() - 1).getPosition());
+        transportList.get(transportList.size() - 1).go(destination);
         person.walk(destination);
         assert person.getPosition() == destination;
     }
