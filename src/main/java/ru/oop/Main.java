@@ -41,13 +41,13 @@ public class Main {
      * на любом, заранее определённом транспорте
      */
     public static void moveTo(Person person, Position destination) {
-        List<Transport> transportList = List.of(new Car(person), new Bus("43", person), new Bus("50", person));
-        for (int i = 0; i < transportList.size() - 1; i++) {
-            person.walk(transportList.get(i).getPosition());
-            transportList.get(i).go(transportList.get(i + 1).getPosition());
+        ListIterator<Transport> iterator = List.of(new Car(person), new Bus("43", person), new Bus("50", person)).listIterator();
+        Transport current = iterator.next();
+        while (iterator.hasNext()) {
+            Transport next = iterator.next();
+            person.goToNextStation(current.getPosition(),iterator.next());
+            current = next;
         }
-        person.walk(transportList.get(transportList.size() - 1).getPosition());
-        transportList.get(transportList.size() - 1).go(destination);
         person.walk(destination);
         assert person.getPosition() == destination;
     }
